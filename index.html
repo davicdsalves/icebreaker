@@ -3,6 +3,7 @@
 <head>
   <title>Icebreaker</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -67,10 +68,10 @@
         <p id="generatedQuestion">Welcome! Click the button below to generate an icebreaker question.</p>
       </div>
     </div>
-    <button class="button" onclick="generateQuestion()"><i class="fas fa-arrow-circle-right"></i> Generate Question</button>
+    <button class="button" id="generateButton"><i class="fas fa-arrow-circle-right"></i> Generate Question</button>
     <div>
-      <button class="button" onclick="addUser()">Add User</button>
-      <button class="button" onclick="selectUser()">Select User</button>
+      <button class="button" id="addUserButton">Add User</button>
+      <button class="button" id="selectUserButton">Select User</button>
     </div>
     <p id="selectedUser"></p>
     <h2>User List:</h2>
@@ -131,33 +132,40 @@
   "What is one thing you would like to learn or improve upon in the next year?"
     ];
 
-    function generateQuestion() {
-      var randomNumber = Math.floor(Math.random() * questions.length);
-      var generatedQuestion = questions[randomNumber];
-      document.getElementById("generatedQuestion").textContent = generatedQuestion;
-    }
+    $(document).ready(function() {
+      $("#generateButton").click(function() {
+        var randomNumber = Math.floor(Math.random() * questions.length);
+        var generatedQuestion = questions[randomNumber];
+        $("#generatedQuestion").text(generatedQuestion);
+      });
 
-    function addUser() {
-      var username = prompt("Enter a username:");
-      if (username) {
-        var userList = document.getElementById("userList");
-        var listItem = document.createElement("li");
-        listItem.textContent = username;
-        userList.appendChild(listItem);
-      }
-    }
+      $("#addUserButton").click(function() {
+        var usernames = prompt("Enter usernames separated by commas:");
+        if (usernames) {
+          var userList = $("#userList");
+          var newUsers = usernames.split(",");
+          $.each(newUsers, function(index, username) {
+            username = username.trim();
+            if (username) {
+              var listItem = $("<li>").text(username);
+              userList.append(listItem);
+            }
+          });
+        }
+      });
 
-    function selectUser() {
-      var userList = document.getElementById("userList");
-      var users = userList.getElementsByTagName("li");
-      if (users.length > 0) {
-        var selectedUser = users[0].textContent;
-        document.getElementById("selectedUser").textContent = "Selected User: " + selectedUser;
-        userList.removeChild(users[0]);
-      } else {
-        document.getElementById("selectedUser").textContent = "No users available.";
-      }
-    }
+      $("#selectUserButton").click(function() {
+        var userList = $("#userList");
+        var users = userList.find("li");
+        if (users.length > 0) {
+          var selectedUser = users.first().text();
+          $("#selectedUser").text("Selected User: " + selectedUser);
+          users.first().remove();
+        } else {
+          $("#selectedUser").text("No users available.");
+        }
+      });
+    });
   </script>
 </body>
 </html>
