@@ -18,6 +18,9 @@ A simple HTML page for generating icebreaker questions and managing a user list.
 3. Click the "Add User" button to add a user to the user list.
 4. Click the "Select User" button to select a user from the user list and display it.
 5. The selected user will be shown below the generated question.
+6. To select a specific language for the generated questions, add the `language` query parameter to the URL. For example:
+   - English: `index.html?language=en` (default one)
+   - Portuguese: `index.html?language=pt`
 
 ## Loading User List from Query Parameter
 You can also load a user list from a query parameter.  
