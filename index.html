@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Icebreaker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon {
+      margin-right: 5px;
+    }
+
+    .container {
+      margin: 20px auto;
+      max-width: 600px;
+    }
+
+    .question-container {
+      height: 100px;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    #selectedUser {
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    #userList {
+      text-align: left;
+      list-style: none;
+      padding-left: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-arrow-circle-right icon"></i>Icebreaker</h1>
+    <div class="question-container">
+      <div class="question">
+        <p id="generatedQuestion">Welcome! Click the button below to generate an icebreaker question.</p>
+      </div>
+    </div>
+    <button class="button" onclick="generateQuestion()"><i class="fas fa-arrow-circle-right"></i> Generate Question</button>
+    <div>
+      <button class="button" onclick="addUser()">Add User</button>
+      <button class="button" onclick="selectUser()">Select User</button>
+    </div>
+    <p id="selectedUser"></p>
+    <h2>User List:</h2>
+    <ul id="userList"></ul>
+  </div>
+
+  <script>
+    var questions = [
+  "If you could have any superpower, what would it be and why?",
+  "What is your favorite hobby or pastime?",
+  "If you could travel anywhere in the world, where would you go and why?",
+  "What is the most memorable concert or live performance you have attended?",
+  "If you could meet any historical figure, who would it be and what would you ask them?",
+  "What is your favorite book or movie and why?",
+  "If you could have dinner with any fictional character, who would it be and why?",
+  "What is one thing on your bucket list that you hope to achieve?",
+  "If you could learn any new skill instantly, what would it be and why?",
+  "What is your favorite way to relax and unwind after a long day?",
+  "If you could have a dinner party with three famous people, living or dead, who would you invite?",
+  "What is the most adventurous thing you have ever done?",
+  "What is your favorite type of cuisine or food?",
+  "If you could time travel, would you go to the past or the future? Why?",
+  "What is one interesting fact about yourself that not many people know?",
+  "What is your favorite season and why?",
+  "If you could witness any historical event, which one would you choose and why?",
+  "What is the best piece of advice you've ever received?",
+  "If you could have any talent or skill, what would it be and why?",
+  "What is your favorite outdoor activity or sport?",
+  "If you could have a conversation with any animal, which one would you choose and why?",
+  "What is your favorite quote or motto that you live by?",
+  "If you could have a personal chef, what type of meals would you want them to prepare?",
+  "What is one thing you would like to achieve in the next year?",
+  "If you had unlimited resources, what kind of philanthropic work would you do?",
+  "What is your favorite way to spend a day off?",
+  "If you could have any talent in the world, what would you choose?",
+  "What is the best vacation you have ever taken?",
+  "If you could invite any three people to a dinner party, who would they be?",
+  "What is your favorite board game or card game?",
+  "If you could live in any fictional world, which one would you choose?",
+  "What is your favorite quote or saying?",
+  "If you could have a conversation with your younger self, what advice would you give?",
+  "What is your favorite type of music and why?",
+  "If you could instantly learn any language, which one would you choose?",
+  "What is the most memorable gift you have ever received?",
+  "If you could have any animal as a pet, what would you choose?",
+  "What is your favorite way to stay active and fit?",
+  "If you could have a special power, unrelated to superpowers, what would it be?",
+  "What is your favorite holiday and why?",
+  "If you could witness any historical event, what would you choose?",
+  "What is one thing that always brings a smile to your face?",
+  "If you could have dinner with any celebrity, who would it be and why?",
+  "What is your favorite thing about the city or town you live in?",
+  "If you could invent a new technology, what would it do?",
+  "What is your favorite quote from a movie or TV show?",
+  "If you could have any job in the world for one day, what would it be?",
+  "What is one item on your bucket list that you hope to check off soon?",
+  "If you could time travel, would you go to the past or the future, and why?",
+  "What is one thing you would like to learn or improve upon in the next year?"
+    ];
+
+    function generateQuestion() {
+      var randomNumber = Math.floor(Math.random() * questions.length);
+      var generatedQuestion = questions[randomNumber];
+      document.getElementById("generatedQuestion").textContent = generatedQuestion;
+    }
+
+    function addUser() {
+      var username = prompt("Enter a username:");
+      if (username) {
+        var userList = document.getElementById("userList");
+        var listItem = document.createElement("li");
+        listItem.textContent = username;
+        userList.appendChild(listItem);
+      }
+    }
+
+    function selectUser() {
+      var userList = document.getElementById("userList");
+      var users = userList.getElementsByTagName("li");
+      if (users.length > 0) {
+        var selectedUser = users[0].textContent;
+        document.getElementById("selectedUser").textContent = "Selected User: " + selectedUser;
+        userList.removeChild(users[0]);
+      } else {
+        document.getElementById("selectedUser").textContent = "No users available.";
+      }
+    }
+  </script>
+</body>
+</html>
