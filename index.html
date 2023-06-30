@@ -70,7 +70,7 @@
             <ul id="userList"></ul>
         </div>
         <script>
-            var questions = [
+            var englishQuestions = [
                 "If you could have any superpower, what would it be and why?",
                 "What is your favorite hobby or pastime?",
                 "If you could travel anywhere in the world, where would you go and why?",
@@ -122,6 +122,63 @@
                 "If you could time travel, would you go to the past or the future, and why?",
                 "What is one thing you would like to learn or improve upon in the next year?",
             ];
+            var portugueseQuestions = [
+                "Qual é o seu hobby favorito?",
+                "Se você pudesse ter um superpoder, qual seria?",
+                "Qual é a sua música favorita para cantar no karaokê?",
+                "Qual é o seu livro ou filme favorito?",
+                "Se você pudesse viajar para qualquer lugar do mundo, para onde iria?",
+                "Qual é a aventura mais emocionante que você já viveu?",
+                "Se você pudesse conhecer qualquer figura histórica, quem seria?",
+                "Qual é a sua maneira favorita de relaxar após um dia longo?",
+                "Qual é o seu sabor de sorvete favorito?",
+                "Se você pudesse jantar com qualquer personagem fictício, quem seria?",
+                "Qual é a sua estação do ano favorita e por quê?",
+                "Se você pudesse aprender qualquer nova habilidade, qual seria?",
+                "Qual é a sua citação favorita?",
+                "Se você pudesse viajar no tempo, iria para o passado ou para o futuro?",
+                "Qual é uma coisa na sua lista de desejos?",
+                "Se você pudesse ter qualquer animal como animal de estimação, qual seria?",
+                "Qual é o seu tipo de culinária favorito?",
+                "Se você pudesse ser um atleta profissional, qual esporte escolheria?",
+                "Qual é a sua maneira favorita de se manter ativo?",
+                "Se você pudesse ter um jantar com qualquer três pessoas, vivas ou mortas, quem convidaria?",
+                "Qual é a sua atividade ao ar livre favorita?",
+                "Se você pudesse ter um talento especial, qual seria?",
+                "Qual é o seu feriado favorito e por quê?",
+                "Se você pudesse ter qualquer emprego por um dia, qual escolheria?",
+                "Qual é a sua coisa favorita em si mesmo(a)?",
+                "O que você mais gosta de fazer nos fins de semana?",
+                "Qual é o seu prato favorito da culinária brasileira?",
+                "Se você pudesse viver em qualquer cidade do Brasil, qual escolheria?",
+                "Qual é o seu esporte favorito para assistir na televisão?",
+                "O que você mais gosta de fazer ao ar livre?",
+                "Qual é a sua série de TV favorita?",
+                "Se você pudesse ter um superpoder relacionado à comida, qual seria?",
+                "Qual é a sua sobremesa favorita?",
+                "O que você mais gosta de fazer nas férias?",
+                "Se você pudesse ter um animal de estimação incomum, qual escolheria?",
+                "Qual é o seu filme brasileiro favorito?",
+                "Se você pudesse ter uma casa em qualquer lugar do mundo, onde seria?",
+                "Qual é a sua atividade física favorita?",
+                "O que você mais gosta de fazer em dias chuvosos?",
+                "Se você pudesse aprender um novo idioma, qual escolheria?",
+                "Qual é o seu tipo de música favorito?",
+                "Se você pudesse ter um poder de cura, qual seria?",
+                "Qual é a sua comida favorita para um dia de frio?",
+                "Se você pudesse ser um personagem de desenho animado, quem seria?",
+                "Qual é o seu destino de viagem dos sonhos?",
+                "Se você pudesse ter uma profissão diferente, qual escolheria?",
+                "Qual é a sua habilidade culinária favorita?",
+                "O que você mais gosta de fazer em seu tempo livre?",
+                "Se você pudesse ter um talento artístico, qual seria?",
+                "Qual é o seu programa de TV favorito da infância?",
+                "Se você pudesse ter um poder mágico, qual seria?",
+                "Qual é a sua bebida favorita?",
+                "O que você mais gosta de fazer em um dia ensolarado?",
+            ];
+
+            var questions = [];
 
             $(document).ready(function () {
                 function getQueryParams() {
@@ -149,6 +206,16 @@
                 }
 
                 addUsersFromQueryParam();
+
+                function getLanguage() {
+                    var queryParams = getQueryParams();
+                    var language = queryParams["language"];
+                    questions = englishQuestions;
+                    if (language) {
+                        questions = language === "pt" ? portugueseQuestions : englishQuestions;
+                    }
+                }
+                getLanguage();
 
                 $("#generateButton").click(function () {
                     var randomNumber = Math.floor(Math.random() * questions.length);
