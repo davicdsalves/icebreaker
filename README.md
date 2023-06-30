@@ -19,6 +19,17 @@ A simple HTML page for generating icebreaker questions and managing a user list.
 4. Click the "Select User" button to select a user from the user list and display it.
 5. The selected user will be shown below the generated question.
 
+## Loading User List from Query Parameter
+You can also load a user list from a query parameter.  
+Simply add the query parameter userList to the URL when opening the index.html file in the browser.  
+The user list should be comma-separated values.
+
+Example:
+```
+index.html?users=user1,user2,user3
+```
+In this example, the page will load with the user list containing "user1", "user2", and "user3".****
+
 ## Customization
 
 - Icebreaker Questions: You can customize the list of icebreaker questions by modifying the `questions` array in the JavaScript code.
