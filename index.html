@@ -26,7 +26,7 @@
     }
 
     .question-container {
-      height: 100px;
+      height: 100px; /* Fixed height for the question container */
       margin-bottom: 20px;
     }
 
@@ -133,6 +133,35 @@
     ];
 
     $(document).ready(function() {
+      // Function to get URL query parameters
+      function getQueryParams() {
+        var params = {};
+        window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(str, key, value) {
+          params[key] = value;
+        });
+        return params;
+      }
+
+      // Function to add users from query parameter
+      function addUsersFromQueryParam() {
+        var queryParams = getQueryParams();
+        var usersParam = queryParams["users"];
+        if (usersParam) {
+          var userList = $("#userList");
+          var newUsers = usersParam.split(",");
+          $.each(newUsers, function(index, username) {
+            username = username.trim();
+            if (username) {
+              var listItem = $("<li>").text(username);
+              userList.append(listItem);
+            }
+          });
+        }
+      }
+
+      // Check for users query parameter and add users if exists
+      addUsersFromQueryParam();
+
       $("#generateButton").click(function() {
         var randomNumber = Math.floor(Math.random() * questions.length);
         var generatedQuestion = questions[randomNumber];
