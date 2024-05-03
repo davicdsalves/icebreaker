@@ -60,8 +60,9 @@
                     <p id="generatedQuestion">Welcome! Click the button below to generate an icebreaker question.</p>
                 </div>
             </div>
-            <button class="button" id="generateButton"><i class="fas fa-arrow-circle-right"></i> Generate Question</button>
-            <button class="button" id="removeQuestionButton"><i class="fas fa-times"></i> Remove Question</button>
+            <button class="button" id="playButton"><i class="fas fa-play"></i> </button>
+            <button class="button" id="pauseButton"><i class="fas fa-pause"></i> </button>
+            <button class="button" id="removeQuestionButton"><i class="fas fa-times"></i> </button>
             <div>
                 <button class="button" id="addUserButton">Add User</button>
                 <button class="button" id="selectUserButton">Select User</button>
@@ -412,12 +413,6 @@
                 }
                 getLanguage();
 
-                $("#generateButton").click(function () {
-                    var randomNumber = Math.floor(Math.random() * questions.length);
-                    var generatedQuestion = questions[randomNumber];
-                    $("#generatedQuestion").text(generatedQuestion);
-                });
-
                 $("#removeQuestionButton").click(function () {
                     var currentQuestion = $("#generatedQuestion").text();
                     var index = questions.indexOf(currentQuestion);
@@ -425,6 +420,20 @@
                         questions.splice(index, 1);
                     }
                     $("#generatedQuestion").text("Question removed. Click 'Generate Question' for a new one.");
+                });
+
+                var intervalId;
+
+                $("#playButton").click(function () {
+                    intervalId = setInterval(function () {
+                        var randomNumber = Math.floor(Math.random() * questions.length);
+                        var generatedQuestion = questions[randomNumber];
+                        $("#generatedQuestion").text(generatedQuestion);
+                    }, 50); // Change the question every 2 seconds
+                });
+
+                $("#pauseButton").click(function () {
+                    clearInterval(intervalId);
                 });
 
                 $("#addUserButton").click(function () {
