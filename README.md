@@ -10,15 +10,21 @@ A simple HTML page for generating icebreaker questions and managing a user list.
 - Add users to a user list.
 - Select a user from the list and display the selected user.
 - Remove the selected user from the user list.
-
+- Toggle between a light and dark theme.
+- Cycle through the questions with a play and pause button.
+- Remove a displayed question from the list of questions.
+ 
 ## Usage
 
 1. Open the `index.html` file in a web browser.
-2. Click the "Generate Question" button to display a random icebreaker question.
-3. Click the "Add User" button to add a user to the user list.
-4. Click the "Select User" button to select a user from the user list and display it.
-5. The selected user will be shown below the generated question.
-6. To select a specific language for the generated questions, add the `language` query parameter to the URL. For example:
+2. Click the "Add User" button to add a user to the user list.
+3. Click the "Select User" button to select a user from the user list and display it.
+4. The selected user will be shown below the generated question.
+5. Click the "Play" button to automatically cycle through the questions.
+6. Click the "Pause" button to stop cycling through the questions.
+7. Click the "Remove Question" button to remove the currently displayed question from the list of questions.
+8. Click the "Theme" button to toggle between a light and dark theme.
+9. To select a specific language for the generated questions, add the `language` query parameter to the URL. For example:
    - English: `index.html?language=en` (default one)
    - Portuguese: `index.html?language=pt`
 
