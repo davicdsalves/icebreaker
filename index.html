@@ -50,6 +50,10 @@
                 list-style: none;
                 padding-left: 0;
             }
+            .button:disabled {
+                background-color: grey;
+                cursor: not-allowed;
+            }
         </style>
     </head>
     <body>
@@ -61,7 +65,7 @@
                 </div>
             </div>
             <button class="button" id="playButton"><i class="fas fa-play"></i> </button>
-            <button class="button" id="pauseButton"><i class="fas fa-pause"></i> </button>
+            <button class="button" id="pauseButton" disabled><i class="fas fa-pause"></i> </button>
             <button class="button" id="removeQuestionButton"><i class="fas fa-times"></i> </button>
             <div>
                 <button class="button" id="addUserButton">Add User</button>
@@ -425,14 +429,18 @@
                 var intervalId;
 
                 $("#playButton").click(function () {
+                    $(this).prop("disabled", true);
+                    $("#pauseButton").prop("disabled", false);
                     intervalId = setInterval(function () {
                         var randomNumber = Math.floor(Math.random() * questions.length);
                         var generatedQuestion = questions[randomNumber];
                         $("#generatedQuestion").text(generatedQuestion);
-                    }, 50); // Change the question every 2 seconds
+                    }, 50);
                 });
 
                 $("#pauseButton").click(function () {
+                    $("#playButton").prop("disabled", false);
+                    $(this).prop("disabled", true);
                     clearInterval(intervalId);
                 });
 
