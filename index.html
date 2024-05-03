@@ -54,11 +54,33 @@
                 background-color: grey;
                 cursor: not-allowed;
             }
+            :root {
+                --background-color: white;
+                --text-color: black;
+            }
+
+            body {
+                background-color: var(--background-color);
+                color: var(--text-color);
+            }
+            .dark-theme {
+                --background-color: black;
+                --text-color: white;
+            }
+            .header {
+                display: flex;
+            }
+            .theme-button {
+                margin-left: 10px;
+            }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1><i class="fas fa-users icon"></i>Icebreaker</h1>
+            <h1 class="header">
+                <span><i class="fas fa-users icon"></i>Icebreaker</span>
+                <button class="button theme-button" id="themeButton"><i class="fas fa-moon"></i> </button>
+            </h1>
             <div class="question-container">
                 <div class="question">
                     <p id="generatedQuestion">Welcome! Click the button below to generate an icebreaker question.</p>
@@ -416,6 +438,15 @@
                     }
                 }
                 getLanguage();
+
+                $('#themeButton').click(function() {
+                    $('body').toggleClass('dark-theme');
+                    if ($('body').hasClass('dark-theme')) {
+                        $(this).html('<i class="fas fa-sun"></i> ');
+                    } else {
+                        $(this).html('<i class="fas fa-moon"></i> ');
+                    }
+                });
 
                 $("#removeQuestionButton").click(function () {
                     var currentQuestion = $("#generatedQuestion").text();
