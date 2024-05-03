@@ -66,7 +66,7 @@
             </div>
             <button class="button" id="playButton"><i class="fas fa-play"></i> </button>
             <button class="button" id="pauseButton" disabled><i class="fas fa-pause"></i> </button>
-            <button class="button" id="removeQuestionButton"><i class="fas fa-times"></i> </button>
+            <button class="button" id="removeQuestionButton" disabled><i class="fas fa-times"></i> </button>
             <div>
                 <button class="button" id="addUserButton">Add User</button>
                 <button class="button" id="selectUserButton">Select User</button>
@@ -423,7 +423,7 @@
                     if (index > -1) {
                         questions.splice(index, 1);
                     }
-                    $("#generatedQuestion").text("Question removed. Click 'Generate Question' for a new one.");
+                    $("#generatedQuestion").text("Question removed. Click the 'Play' button for a new one.");
                 });
 
                 var intervalId;
@@ -431,6 +431,7 @@
                 $("#playButton").click(function () {
                     $(this).prop("disabled", true);
                     $("#pauseButton").prop("disabled", false);
+                    $("#removeQuestionButton").prop("disabled", true);
                     intervalId = setInterval(function () {
                         var randomNumber = Math.floor(Math.random() * questions.length);
                         var generatedQuestion = questions[randomNumber];
@@ -440,6 +441,7 @@
 
                 $("#pauseButton").click(function () {
                     $("#playButton").prop("disabled", false);
+                    $("#removeQuestionButton").prop("disabled", false);
                     $(this).prop("disabled", true);
                     clearInterval(intervalId);
                 });
