@@ -1,0 +1,21 @@
+{
+  "name": "icebreaker",
+  "version": "1.0.0",
+  "description": "A simple HTML page for generating icebreaker questions and managing a user list. Perfect for team building activities, social events, or any situation where you need fun and engaging icebreaker questions.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "fs": "^0.0.1-security",
+    "path": "^0.12.7"
+  }
+}
