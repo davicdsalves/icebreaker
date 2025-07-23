@@ -417,7 +417,9 @@ Create 40 questions following this style:`;
                 },
                 error: function(xhr, status, error) {
                     var errorMsg = "Failed to load questions: ";
-                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                    if (xhr.status === 405) {
+                        errorMsg += "invalid model";
+                    } else if (xhr.responseJSON && xhr.responseJSON.error) {
                         errorMsg += xhr.responseJSON.error.message || error;
                     } else {
                         errorMsg += error;
