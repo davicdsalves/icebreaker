@@ -1,48 +1,97 @@
 # Icebreaker HTML
 
-A simple HTML page for generating icebreaker questions and managing a user list. Perfect for team building activities, social events, or any situation where you need fun and engaging icebreaker questions.
+A dynamic HTML page for generating icebreaker questions and managing a user list. Perfect for team building activities, social events, or retrospectives where you need engaging conversation starters.
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Features
 
-- Generate random icebreaker questions from a predefined list.
-- Add users to a user list.
-- Select a user from the list and display the selected user.
-- Remove the selected user from the user list.
-- Toggle between a light and dark theme.
-- Cycle through the questions with a play and pause button.
-- Remove a displayed question from the list of questions.
- 
+### Core Functionality
+- Generate random icebreaker questions from predefined lists or LLM-generated content
+- Add users to a user list with comma-separated input
+- Select and remove users from the list automatically
+- Toggle between light and dark themes
+- Cycle through questions with play/pause controls
+- Remove displayed questions from the pool
+
+### LLM Integration
+- **Dynamic question generation** from external LLM APIs
+- **Configurable API endpoint** and authentication
+- **Model selection** with popular presets (Claude, GPT, Gemini) or custom models
+- **Bilingual prompts** optimized for English and Portuguese
+- **Collapsible configuration panel** for clean interface
+- **Error handling** with specific messages for common issues
+- **30-second timeout** protection for API calls
+
 ## Usage
 
-1. Open the `index.html` file in a web browser.
-2. Click the "Add User" button to add a user to the user list.
-3. Click the "Select User" button to select a user from the user list and display it.
-4. The selected user will be shown below the generated question.
-5. Click the "Play" button to automatically cycle through the questions.
-6. Click the "Pause" button to stop cycling through the questions.
-7. Click the "Remove Question" button to remove the currently displayed question from the list of questions.
-8. Click the "Theme" button to toggle between a light and dark theme.
-9. To select a specific language for the generated questions, add the `language` query parameter to the URL. For example:
-   - English: `index.html?language=en` (default one)
-   - Portuguese: `index.html?language=pt`
+### Basic Setup
+1. Open `index.html` in a web browser or host on a web server
+2. Use default questions or configure LLM integration for dynamic content
 
-## Loading User List from Query Parameter
-You can also load a user list from a query parameter.  
-Simply add the query parameter userList to the URL when opening the index.html file in the browser.  
-The user list should be comma-separated values.
+### LLM Configuration
+1. Click "LLM Configuration" to expand settings
+2. Enter your API endpoint URL
+3. Provide your bearer token
+4. Select or enter a model name
+5. Choose language (English/Portuguese)
+6. Click "Load Questions from LLM"
 
-Example:
-```
-index.html?users=user1,user2,user3
-```
-In this example, the page will load with the user list containing "user1", "user2", and "user3".****
+### Query Parameters
+- **Users**: `index.html?users=user1,user2,user3`
+- **Language**: `index.html?language=pt` (Portuguese) or `language=en` (English, default)
+
+### Controls
+- **Play/Pause**: Automatically cycle through questions
+- **Remove Question**: Delete current question from pool
+- **Add User**: Enter comma-separated usernames
+- **Select User**: Pick and remove first user from list
+- **Theme Toggle**: Switch between light/dark modes
+
+## LLM Integration Details
+
+### Supported Models
+- `claude-sonnet-4-20250514-v1.0` (default)
+- `gpt-4.1`
+- `gemini-2.5-flash`
+- Custom model names supported
+
+### API Requirements
+- POST endpoint accepting OpenAI-compatible format
+- Bearer token authentication
+- JSON response with `choices[0].message.content` structure
+
+### Question Generation
+- Generates 40 high-quality icebreaker questions per request
+- Avoids basic questions like "what's your favorite color"
+- Focuses on experience-sharing and reflection
+- Professional yet engaging tone
 
 ## Customization
 
-- Icebreaker Questions: You can customize the list of icebreaker questions by modifying the `questions` array in the JavaScript code.
-- Styling: You can modify the CSS styles in the `<style>` tag to change the appearance of the page according to your preferences.
+### Static Questions
+Modify the `englishQuestions` or `portugueseQuestions` arrays in the JavaScript code.
 
-Feel free to explore and adapt the HTML code to suit your specific needs. Have fun!
+### Styling
+Update CSS variables in the `<style>` section for colors, fonts, and layout.
 
+### LLM Prompts
+Edit the `getPrompt()` function to customize question generation behavior.
+
+## Technical Notes
+
+### CORS Considerations
+- When running locally (`file://`), use browser CORS extensions or proxy server
+- Hosting on web servers (GitHub Pages, etc.) resolves CORS issues
+- VPN requirements apply to the user's browser, not the hosting location
+
+### Error Handling
+- 405 errors show "invalid model" message
+- Network timeouts after 30 seconds
+- Malformed responses handled gracefully
+- Token and URL validation before API calls
+
+## Browser Compatibility
+- Modern browsers with ES5+ support
+- jQuery 3.6.0 and Font Awesome 5.15.4 dependencies
+- No localStorage usage for maximum compatibility
