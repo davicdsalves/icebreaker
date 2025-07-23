@@ -209,7 +209,7 @@
 
     function getPrompt(language) {
         if (language === 'pt') {
-            return `Você é um especialista em dinâmicas de grupo e team building. Crie exatamente 20 perguntas quebra-gelo criativas e envolventes para retrospectivas de equipe.
+            return `Você é um especialista em dinâmicas de grupo e team building. Crie exatamente 40 perguntas quebra-gelo criativas e envolventes para retrospectivas de equipe.
 
 REGRAS IMPORTANTES:
 - Evite perguntas óbvias como "qual sua cor favorita"
@@ -224,9 +224,9 @@ Exemplos do estilo desejado:
 - Qual foi o maior risco que você já assumiu e valeu a pena?
 - Se você pudesse resolver um problema mundial, qual escolheria?
 
-Crie 20 perguntas seguindo esse estilo:`;
+Crie 40 perguntas seguindo esse estilo:`;
         } else {
-            return `You are an expert in group dynamics and team building. Create exactly 20 creative and engaging icebreaker questions for team retrospectives.
+            return `You are an expert in group dynamics and team building. Create exactly 40 creative and engaging icebreaker questions for team retrospectives.
 
 IMPORTANT RULES:
 - Avoid obvious questions like "what's your favorite color"
@@ -241,7 +241,7 @@ Examples of the desired style:
 - What's the biggest risk you've ever taken that paid off?
 - If you could solve one world problem, which would you choose?
 
-Create 20 questions following this style:`;
+Create 40 questions following this style:`;
         }
     }
 
@@ -357,8 +357,6 @@ Create 20 questions following this style:`;
                     var errorMsg = "Failed to load questions: ";
                     if (xhr.responseJSON && xhr.responseJSON.error) {
                         errorMsg += xhr.responseJSON.error.message || error;
-                    } else if (error.includes('CORS')) {
-                        errorMsg = "CORS error - install 'CORS Unblock' browser extension";
                     } else {
                         errorMsg += error;
                     }
@@ -369,40 +367,6 @@ Create 20 questions following this style:`;
                     button.html('<i class="fas fa-download"></i> Load Questions from LLM');
                 }
             });
-
-            $.ajax(ajaxConfig)
-                .done(function(response) {
-                    try {
-                        var content = response.choices[0].message.content;
-                        var newQuestions = content.split('\n')
-                            .map(function(q) { return q.trim(); })
-                            .filter(function(q) { return q.length > 0 && !q.match(/^\d+\.?\s*/); });
-
-                        if (newQuestions.length > 0) {
-                            dynamicQuestions = newQuestions;
-                            questions = dynamicQuestions;
-                            showStatus("Successfully loaded " + newQuestions.length + " questions from LLM!");
-                            $("#generatedQuestion").text("Dynamic questions loaded! Click 'Play' to start.");
-                        } else {
-                            showStatus("No valid questions found in response", true);
-                        }
-                    } catch (error) {
-                        showStatus("Error parsing response: " + error.message, true);
-                    }
-                })
-                .fail(function(xhr, status, error) {
-                    var errorMsg = "Failed to load questions: ";
-                    if (xhr.responseJSON && xhr.responseJSON.error) {
-                        errorMsg += xhr.responseJSON.error.message || error;
-                    } else {
-                        errorMsg += error;
-                    }
-                    showStatus(errorMsg, true);
-                })
-                .always(function() {
-                    button.removeClass("loading").prop("disabled", false);
-                    button.html('<i class="fas fa-download"></i> Load Questions from LLM');
-                });
         });
 
         $('#themeButton').click(function() {
