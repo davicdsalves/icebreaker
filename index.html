@@ -126,10 +126,20 @@
             color: #a8d4b0;
             border-color: #2d5a34;
         }
-        .dark-theme .status-error {
-            background-color: #4d1e20;
-            color: #d4a8aa;
-            border-color: #5a2d2f;
+        .config-section h3 {
+            margin: 0 0 15px 0;
+            user-select: none;
+        }
+        .config-section h3:hover {
+            color: #4caf50;
+        }
+        #configContent {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        #configContent.collapsed {
+            max-height: 0;
+            opacity: 0;
         }
     </style>
 </head>
@@ -141,24 +151,28 @@
     </h1>
 
     <div class="config-section">
-        <h3>LLM Configuration</h3>
-        <div class="config-row">
-            <label for="apiUrl">API URL:</label>
-            <input type="text" id="apiUrl" placeholder="Enter API endpoint URL" />
+        <h3 onclick="toggleConfig()" style="cursor: pointer;">
+            <i id="configArrow" class="fas fa-chevron-down"></i> LLM Configuration
+        </h3>
+        <div id="configContent">
+            <div class="config-row">
+                <label for="apiUrl">API URL:</label>
+                <input type="text" id="apiUrl" placeholder="Enter API endpoint URL" />
+            </div>
+            <div class="config-row">
+                <label for="requesterToken">Token:</label>
+                <input type="password" id="requesterToken" placeholder="Enter your bearer token" />
+            </div>
+            <div class="config-row">
+                <label for="language">Language:</label>
+                <select id="languageSelect">
+                    <option value="en">English</option>
+                    <option value="pt">Portuguese</option>
+                </select>
+            </div>
+            <button class="button" id="loadQuestionsButton"><i class="fas fa-download"></i> Load Questions from LLM</button>
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
         </div>
-        <div class="config-row">
-            <label for="requesterToken">Token:</label>
-            <input type="password" id="requesterToken" placeholder="Enter your bearer token" />
-        </div>
-        <div class="config-row">
-            <label for="language">Language:</label>
-            <select id="languageSelect">
-                <option value="en">English</option>
-                <option value="pt">Portuguese</option>
-            </select>
-        </div>
-        <button class="button" id="loadQuestionsButton"><i class="fas fa-download"></i> Load Questions from LLM</button>
-        <div id="statusMessage" class="status-message" style="display: none;"></div>
     </div>
 
     <div class="question-container">
@@ -206,6 +220,19 @@
 
     var questions = [];
     var dynamicQuestions = [];
+
+    function toggleConfig() {
+        var content = $("#configContent");
+        var arrow = $("#configArrow");
+
+        if (content.hasClass("collapsed")) {
+            content.removeClass("collapsed");
+            arrow.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+        } else {
+            content.addClass("collapsed");
+            arrow.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+        }
+    }
 
     function getPrompt(language) {
         if (language === 'pt') {
@@ -290,6 +317,19 @@ Create 40 questions following this style:`;
             }
         });
 
+        function toggleConfig() {
+            var content = $("#configContent");
+            var arrow = $("#configArrow");
+
+            if (content.hasClass("collapsed")) {
+                content.removeClass("collapsed");
+                arrow.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+            } else {
+                content.addClass("collapsed");
+                arrow.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+            }
+        }
+
         function showStatus(message, isError = false) {
             var statusDiv = $("#statusMessage");
             statusDiv.removeClass("status-success status-error");
@@ -300,6 +340,19 @@ Create 40 questions following this style:`;
             setTimeout(function() {
                 statusDiv.fadeOut();
             }, 5000);
+        }
+
+        function toggleConfig() {
+            var content = $("#configContent");
+            var arrow = $("#configArrow");
+
+            if (content.hasClass("collapsed")) {
+                content.removeClass("collapsed");
+                arrow.removeClass("fa-chevron-right").addClass("fa-chevron-down");
+            } else {
+                content.addClass("collapsed");
+                arrow.removeClass("fa-chevron-down").addClass("fa-chevron-right");
+            }
         }
 
         $("#loadQuestionsButton").click(function() {
