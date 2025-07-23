@@ -1,607 +1,517 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Icebreaker</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                text-align: center;
-            }
-            h1 {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .icon {
-                margin-right: 5px;
-            }
-            .container {
-                margin: 20px auto;
-                max-width: 600px;
-            }
-            .question-container {
-                height: 100px;
-                margin-bottom: 20px;
-            }
-            .question {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                height: 100%;
-            }
-            .button {
-                background-color: #4caf50;
-                color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                margin-top: 10px;
-            }
-            #selectedUser {
-                font-size: 20px;
-                margin-top: 10px;
-            }
-            #userList {
-                text-align: left;
-                list-style: none;
-                padding-left: 0;
-            }
-            .button:disabled {
-                background-color: grey;
-                cursor: not-allowed;
-            }
-            :root {
-                --background-color: white;
-                --text-color: black;
-            }
+<head>
+    <title>Icebreaker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+        .container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .question-container {
+            height: 100px;
+            margin-bottom: 20px;
+        }
+        .question {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        .button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .button.loading {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        #selectedUser {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+        #userList {
+            text-align: left;
+            list-style: none;
+            padding-left: 0;
+        }
+        .button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+        :root {
+            --background-color: white;
+            --text-color: black;
+        }
 
-            body {
-                background-color: var(--background-color);
-                color: var(--text-color);
-            }
-            .dark-theme {
-                --background-color: black;
-                --text-color: white;
-            }
-            .header {
-                display: flex;
-            }
-            .theme-button {
-                margin-left: 10px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1 class="header">
-                <span><i class="fas fa-users icon"></i>Icebreaker</span>
-                <button class="button theme-button" id="themeButton"><i class="fas fa-moon"></i> </button>
-            </h1>
-            <div class="question-container">
-                <div class="question">
-                    <p id="generatedQuestion">Welcome! Click the button below to generate an icebreaker question.</p>
-                </div>
-            </div>
-            <button class="button" id="playButton"><i class="fas fa-play"></i> </button>
-            <button class="button" id="pauseButton" disabled><i class="fas fa-pause"></i> </button>
-            <button class="button" id="removeQuestionButton" disabled><i class="fas fa-times"></i> </button>
-            <div>
-                <button class="button" id="addUserButton">Add User</button>
-                <button class="button" id="selectUserButton">Select User</button>
-            </div>
-            <p id="selectedUser"></p>
-            <h2>User List:</h2>
-            <ul id="userList"></ul>
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+        .dark-theme {
+            --background-color: black;
+            --text-color: white;
+        }
+        .header {
+            display: flex;
+        }
+        .theme-button {
+            margin-left: 10px;
+        }
+        .config-section {
+            background-color: #f5f5f5;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .dark-theme .config-section {
+            background-color: #333;
+        }
+        .config-row {
+            margin-bottom: 10px;
+        }
+        .config-row label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+        .config-row input {
+            width: 400px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .dark-theme .config-row input {
+            background-color: #444;
+            color: white;
+            border-color: #666;
+        }
+        .status-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .dark-theme .status-success {
+            background-color: #1e4d2b;
+            color: #a8d4b0;
+            border-color: #2d5a34;
+        }
+        .dark-theme .status-error {
+            background-color: #4d1e20;
+            color: #d4a8aa;
+            border-color: #5a2d2f;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="header">
+        <span><i class="fas fa-users icon"></i>Icebreaker</span>
+        <button class="button theme-button" id="themeButton"><i class="fas fa-moon"></i> </button>
+    </h1>
+
+    <div class="config-section">
+        <h3>LLM Configuration</h3>
+        <div class="config-row">
+            <label for="apiUrl">API URL:</label>
+            <input type="text" id="apiUrl" placeholder="Enter API endpoint URL" />
         </div>
-        <script>
-            var englishQuestions = [
-                "If you could have any superpower, what would it be and why?",
-                "What is your favorite hobby or pastime?",
-                "If you could travel anywhere in the world, where would you go and why?",
-                "What is the most memorable concert or live performance you have attended?",
-                "If you could meet any historical figure, who would it be and what would you ask them?",
-                "What is your favorite book or movie and why?",
-                "If you could have dinner with any fictional character, who would it be and why?",
-                "What is one thing on your bucket list that you hope to achieve?",
-                "If you could learn any new skill instantly, what would it be and why?",
-                "What is your favorite way to relax and unwind after a long day?",
-                "If you could have a dinner party with three famous people, living or dead, who would you invite?",
-                "What is the most adventurous thing you have ever done?",
-                "What is your favorite type of cuisine or food?",
-                "If you could time travel, would you go to the past or the future? Why?",
-                "What is one interesting fact about yourself that not many people know?",
-                "What is your favorite season and why?",
-                "If you could witness any historical event, which one would you choose and why?",
-                "What is the best piece of advice you've ever received?",
-                "If you could have any talent or skill, what would it be and why?",
-                "What is your favorite outdoor activity or sport?",
-                "If you could have a conversation with any animal, which one would you choose and why?",
-                "What is your favorite quote or motto that you live by?",
-                "If you could have a personal chef, what type of meals would you want them to prepare?",
-                "What is one thing you would like to achieve in the next year?",
-                "If you had unlimited resources, what kind of philanthropic work would you do?",
-                "What is your favorite way to spend a day off?",
-                "If you could have any talent in the world, what would you choose?",
-                "What is the best vacation you have ever taken?",
-                "If you could invite any three people to a dinner party, who would they be?",
-                "What is your favorite board game or card game?",
-                "If you could live in any fictional world, which one would you choose?",
-                "What is your favorite quote or saying?",
-                "If you could have a conversation with your younger self, what advice would you give?",
-                "What is your favorite type of music and why?",
-                "If you could instantly learn any language, which one would you choose?",
-                "What is the most memorable gift you have ever received?",
-                "If you could have any animal as a pet, what would you choose?",
-                "What is your favorite way to stay active and fit?",
-                "If you could have a special power, unrelated to superpowers, what would it be?",
-                "What is your favorite holiday and why?",
-                "If you could witness any historical event, what would you choose?",
-                "What is one thing that always brings a smile to your face?",
-                "If you could have dinner with any celebrity, who would it be and why?",
-                "What is your favorite thing about the city or town you live in?",
-                "If you could invent a new technology, what would it do?",
-                "What is your favorite quote from a movie or TV show?",
-                "If you could have any job in the world for one day, what would it be?",
-                "What is one item on your bucket list that you hope to check off soon?",
-                "If you could time travel, would you go to the past or the future, and why?",
-                "What is one thing you would like to learn or improve upon in the next year?",
-                "What’s your favorite flower or plant?",
-                "What’s your caffeinated beverage of choice? Coffee? Cola? Tea?",
-                "What’s your favorite scent?",
-                "What’s the last great TV show or movie you wanted?",
-                "Best book you’ve ever read?",
-                "Best professional development book you’ve ever read?",
-                "If you could learn one new professional skill, what would it be?",
-                "If you could learn one new personal skill, what would it be?",
-                "What’s your favorite way to get in some exercise?",
-                "If you could write a book, what genre would you write it in? Mystery? Thriller? Romance? Historical fiction? Non-fiction?",
-                "What is one article of clothing that someone could wear that would make you walk out on a date with them?",
-                "The zombie apocalypse is coming, who are 3 people you want on your team?",
-                "What was the worst style choice you ever made?",
-                "What was the worst haircut you ever had?",
-                "Who was your childhood actor/actress crush?",
-                "If you were a wrestler what would be your entrance theme song?",
-                "Have you ever been told you look like someone famous, who was it?",
-                "If you could bring back any fashion trend what would it be?",
-                "What’s the most embarrassing fashion trend you used to rock?",
-                "What did you name your first car?",
-                "Does your current car have a name? What is it?",
-                "You have your own late night talk show, who do you invite as your first guest?",
-                "If a movie was made of your life what genre would it be, who would play you?",
-                "If you were famous, what would you be famous for?",
-                "You have to sing karaoke, what song do you pick?",
-                "What was your least favorite food as a child? Do you still hate it or do you love it now?",
-                "If you had to eat one meal everyday for the rest of your life what would it be?",
-                "If you were left on a deserted island with either your worst enemy or no one, which would you choose? Why?",
-                "If aliens landed on earth tomorrow and offered to take you home with them, would you go?",
-                "60s, 70s, 80s, 90s: Which decade do you love the most and why?",
-                "What’s your favorite sandwich and why?",
-                "What’s the best piece of advice you’ve ever been given?",
-                "When you die, what do you want to be remembered for?",
-                "What is your favorite item you’ve bought this year?",
-                "What would be the most surprising scientific discovery imaginable?",
-                "What is your absolute dream job?",
-                "What would your talent be if you were Miss or Mister World?",
-                "What would the title of your autobiography be?",
-                "Say you’re independently wealthy and don’t have to work, what would you do with your time?",
-                "If you had to delete all but 3 apps from your smartphone, which ones would you keep?",
-                "What is your favorite magical or mythological animal?",
-                "What does your favorite shirt look like?",
-                "Who is your favorite Disney hero or heroine? Would you trade places with them?",
-                "What would your dream house be like?",
-                "If you could add anyone to Mount Rushmore who would it be; why?",
-                "You’re going sail around the world, what’s the name of your boat?",
-                "What fictional family would you be a member of?",
-                "What is your favorite television network?",
-                "What sport would you compete in if you were in the Olympics?",
-                "What was the worst job you ever had?",
-                "You can have anyone fictional as your imaginary friend, who do you choose and why?",
-                "What would your superpower be and why?",
-                "Which band / artist – dead or alive would play at your funeral?",
-                "As a child, what did you want to be when you grew up?",
-                "What’s your favorite tradition or holiday?",
-                "What fictional world or place would you like to visit?",
-                "What is your favorite breakfast food?",
-                "What is your favorite time of the day and why?",
-                "Teleportation or flying?",
-                "What is your favorite TV show?",
-                "What book, movie read/seen recently you would recommend and why?",
-                "What breed of dog would you be?",
-                "If you had a time machine, would go back in time or into the future?",
-                "Do you think you could live without your smartphone (or other technology item) for 24 hours?",
-                "What is your favorite dessert?",
-                "What was your favorite game to play as a child?",
-                "Are you a traveler or a homebody?",
-                "What’s one career you wish you could have?",
-		"Do you have a favorite plant?",
-                "What’s your favorite place of all the places you’ve travelled?",
-                "Have you ever met your idol or someone you revere greatly?",
-                "Have you ever completed anything on your “bucket list”?",
-                "What’s is one thing we don’t know about you?",
-                "What is your favorite meal to cook and why?",
-                "What is your favorite musical instrument and why?",
-                "Are you a cat person or a dog person?",
-                "What languages do you know how to speak?",
-                "What’s the weirdest food you’ve ever eaten?",
-                "What’s the most out-of-character thing you’ve ever done?",
-                "What is your cellphone wallpaper?",
-                "You can have an unlimited supply of one thing for the rest of your life, what is it? Sushi? Scotch Tape?",
-                "What’s your best scar story?",
-                "Would you go with aliens if they beamed down to Earth?",
-                "Are you sunrise, daylight, twilight, or nighttime? Why?",
-                "What season would you be?",
-                "Are you a good dancer?",
-                "What fruit or vegetable would you most want to be?",
-		"What's a book you've read recently that you would recommend?",
-		"If you could have dinner with any historical figure, who would it be and why?",
-		"What's your favorite way to unwind after a long day?",
-		"If you could instantly become an expert in something, what would it be?",
-		"What's the most interesting place you've ever visited?",
-		"What's a skill you're currently trying to improve?",
-		"If you could only eat one food for the rest of your life, what would it be?",
-		"What's something you've done that you're really proud of?",
-		"What's your favorite movie or TV show and why?",
-		"If you could live in any book, TV show, or movie world, which one would you choose?",
-		"What's a hobby you've always wanted to pick up but never did?",
-		"What's the best piece of advice you've ever received?",
-		"If you could have any superpower, what would it be?",
-		"What's your favorite season and why?",
-		"What's the most daring thing you've ever done?",
-		"If you could teleport anywhere right now, where would you go?",
-		"What's a talent you have that most people don't know about?",
-		"What's your go-to karaoke song?",
-		"If you could switch lives with one person for a day, who would it be?",
-		"What's your favorite childhood memory?",
-		"What's the last thing that made you laugh out loud?",
-		"If you could be an Olympic athlete, in what sport would you compete?",
-		"What's a goal you have for the next year?",
-		"What's your favorite thing to do in the city you live in?",
-		"If you could speak any language fluently, which one would you choose?",
-		"What's the best concert you've ever been to?",
-		"What's your favorite ice cream flavor?",
-		"If you could be any animal for a day, which would you be?",
-		"What's a pet peeve of yours?",
-		"What's your favorite board game or card game?",
-		"If you could have any job in the world, what would it be?",
-		"What's something you're looking forward to in the next few months?",
-		"What's the best vacation you've ever been on?",
-		"What's a song that always gets you on the dance floor?",
-		"If you could meet any living person, who would it be?",
-		"What's your favorite quote or saying?",
-		"What's something you've never done but would like to try?",
-		"What's your favorite holiday and why?",
-		"If you could have a conversation with your younger self, what would you say?",
-		"What's the most unusual food you've ever eaten?",
-		"What's your favorite app on your phone?",
-		"What's something you're terrible at but enjoy doing anyway?",
-		"If you could be a character in any novel, who would you be?",
-		"What's the best gift you've ever received?",
-		"What's something that's on your bucket list?",
-		"What's your favorite type of cuisine?",
-		"If you could witness any event past, present, or future, what would it be?",
-		"What's a fear you've overcome?",
-		"What's your favorite thing about your job?",
-		"If you could choose an age to remain forever, what age would it be?",
-		"What's the most interesting documentary you've ever watched?",
-		"What's your favorite family tradition?",
-		"If you could learn to do anything in one day, what would it be?",
-		"What's the last thing you binge-watched?",
-		"What's your favorite podcast?",
-		"If you could write a book, what genre would it be?",
-		"What's your favorite outdoor activity?",
-		"What's the most beautiful place you've ever seen?",
-		"What's your favorite type of weather?",
-		"If you could have any type of pet, what would you choose?",
-		"What's your favorite thing to cook or bake?",
-		"What's something you thought you'd grow out of but haven't?",
-		"What's your favorite exercise or workout?",
-		"If you could be famous for one thing, what would it be?",
-		"What's a piece of technology you can't live without?",
-		"What's your favorite thing about the place you grew up?",
-		"If you could change one thing about the world, what would it be?",
-		"What's a movie that you can watch over and over again?",
-		"What's your favorite thing to do on a rainy day?",
-		"If you could learn one new personal skill, what would it be?",
-		"What's the most interesting class you've ever taken?",
-		"What's your favorite thing to do on a first date?",
-		"What's a challenge you've faced recently?",
-		"What's your favorite type of music?",
-		"If you could be a master of any musical instrument, which would you choose?",
-		"What's your favorite thing to do with friends?",
-		"What's something you're passionate about?",
-		"If you could go back in time, what period would you visit?",
-		"What's your favorite thing to do on a day off?",
-		"What's the best way to start the day?",
-		"What's a country you'd like to visit but haven't yet?",
-		"What's your favorite thing about your best friend?",
-		"If you could have a dinner party with any five people, dead or alive, who would they be?",
-		"What's the most interesting job you've ever had?",
-		"What's something you've always wanted to learn?",
-		"What's your favorite way to travel?",
-		"What's a book that had a significant impact on you?",
-		"What's your favorite thing to do at the beach?",
-		"If you could be any fictional character for a day, who would you choose?",
-		"What's your favorite type of dessert?",
-		"What's a piece of art that you love?",
-		"What's your favorite thing to do in the winter?",
-		"If you could have any author, living or dead, write your biography, who would you choose?",
-		"What's your favorite way to spend a weekend?",
-		"What's a language you'd love to learn?",
-		"What's your favorite thing to do when you're alone?",
-		"If you could be part of any historical event, which would you choose?",
-		"What's your favorite thing to do in the summer?",
-		"If you could instantly master a dance style, which would it be?",
-		"What's something you've done recently to help someone else?",
-                "If you could replace all the grass in the world with something else, what would it be and why?",
-                "What would be your strategy for surviving a zombie outbreak at a theme park?",
-                "If you could have any author (dead or alive) write your biography, who would it be and what would the title be?",
-                "What’s the most absurd rule you would implement if you were in charge of the world for a day?",
-                "If you could be infamous for any historical event, which one would it be and why?",
-                "What’s the most inappropriate thing you could wear to a job interview and still nail it?",
-                "If you had to eat the same meal every day but it had to be a dessert, what would you choose?",
-                "Which fictional character would you choose as your partner in a debate against aliens?",
-                "What’s the worst theme you could choose for a children’s birthday party?",
-                "If you could have a useless superpower, what would it be and how would you use it to annoy people?",
-                "What’s the most bizarre thing you would include in a time capsule to confuse future generations?",
-                "If you could ban one word from existence, what would it be and what would you replace it with?",
-                "What’s the most ridiculous fact you know that sounds like a lie but is actually true?",
-                "If you could be a fly on the wall anywhere in the world, where would you choose and what would you hope to overhear?",
-                "What’s the most awkward thing you could say in an elevator full of strangers?",
-                "If you could have any movie director film your life story, who would it be and what genre would the movie be?",
-                "What’s the worst wedding gift you can think of that you can still pass off as thoughtful?",
-                "If you could have an unlimited supply of one thing for the rest of your life, but it had to be something unusual, what would it be?",
-                "What’s the most inappropriate song to play at a funeral and why would you choose it?",
-                "If you could be a character in any painting, which one would it be and what would you be doing?",
-                "What’s the most absurd thing you could do while hosting a dinner party to make it memorable?",
-                "If you could create a sport where the losers are punished, what would the punishment be?",
-                "What’s the most bizarre thing you could say to someone you just met to make them remember you?",
-                "If you could have any animal as your sidekick, which one would it be and what special abilities would it have?",
-                "What’s the most ridiculous thing you could use as currency in a post-apocalyptic world?",
-                "If you could make one thing illegal just because it annoys you, what would it be?",
-                "What’s the weirdest tradition you would start if you founded your own country?",
-                "If you could have a theme song play every time you enter a room, what would it be and why?",
-                "What’s the most inappropriate place to host a party and what would the theme be?",
-                "If you could communicate with one species of animals, which one would you choose and what would you discuss?",
-                "If you could haunt any public place after you die, where would it be and what spooky antics would you pull?",
-                "Which fictional apocalypse would you most likely survive, and what would be your survival strategy?",
-                "If you had to be part of a heist, which famous museum would you choose and what would you steal?",
-                "Imagine you're a mad scientist, what unethical experiment would you run if there were no consequences?",
-                "If you could swap lives with a character from any horror movie, who would it be and how would you handle their predicaments?",
-                "What's the most embarrassing thing you would admit on a truth serum?",
-                "If you could invent a new ice cream flavor that reflects your personality, what would it be called and what are the ingredients?",
-                "Which historical figure would you choose for a zombie apocalypse team and why?",
-                "If you could only speak in movie quotes from now on, which movie would you choose your dialogue from?",
-                "What would be the absolute worst name you could give to a pet and why?",
-                "If you were a cult leader, what would be your cult’s main focus?",
-                "What’s a hobby you think should not exist, and what would you replace it with?",
-                "If you could create a holiday, what would it celebrate and what strange traditions would it have?",
-                "What’s the weirdest thing you would do if you were the last person on Earth?",
-                "If you could delete one thing from existence, what would it be and how would the world change?",
-                "What’s the most inappropriate song to play at a funeral? Why?",
-                "If you could live in any video game world, which one would it be and what role would you play?",
-                "What’s the most bizarre talent show act you can think of performing?",
-                "What’s the most inappropriate place you could burst into song, and what song would it be?",
-                "If you could have any mythical creature as a pet, which one would you choose and how would you take care of it?",
-"What's the weirdest food you've ever eaten?",
-"What is your cellphone wallpaper?",
-"You can have an unlimited supply of one thing for the rest of your life, what is it? Sushi? Scotch Tape?",
-"What's your best scar story?",
-"Would you go with aliens if they beamed down to Earth?",
-"Are you a good dancer?",
-"What fruit or vegetable would you most want to be?",
-"Do you love working from home or would you rather be in the office? Is there a balance of both that you like best?",
-"What's the hardest part about working virtually for you? The easiest?",
-"Do you have a dedicated office space at home?",
-"Show us your office space!",
-"Where do you work most frequently from at home? Your office? Your kitchen table? The backyard? Your bed?",
-"Be honest, how often do you work from bed?",
-"Would you rather live without heat and AC or live without social media?",
-"Would you rather be the funniest or smartest person in the room?",
-"Would you rather be able to run at 100 miles per hour or fly at 10 miles per hour?",
-"Would you rather live where it only snows or the temperature never falls below 100 degrees?",
-"Would you rather lose all of your money or all of your pictures?",
-		    
-            ];
-            var portugueseQuestions = [
-                "Qual é o seu hobby favorito?",
-                "Se você pudesse ter um superpoder, qual seria?",
-                "Qual é a sua música favorita para cantar no karaokê?",
-                "Qual é o seu livro ou filme favorito?",
-                "Se você pudesse viajar para qualquer lugar do mundo, para onde iria?",
-                "Qual é a aventura mais emocionante que você já viveu?",
-                "Se você pudesse conhecer qualquer figura histórica, quem seria?",
-                "Qual é a sua maneira favorita de relaxar após um dia longo?",
-                "Qual é o seu sabor de sorvete favorito?",
-                "Se você pudesse jantar com qualquer personagem fictício, quem seria?",
-                "Qual é a sua estação do ano favorita e por quê?",
-                "Se você pudesse aprender qualquer nova habilidade, qual seria?",
-                "Qual é a sua citação favorita?",
-                "Se você pudesse viajar no tempo, iria para o passado ou para o futuro?",
-                "Qual é uma coisa na sua lista de desejos?",
-                "Se você pudesse ter qualquer animal como animal de estimação, qual seria?",
-                "Qual é o seu tipo de culinária favorito?",
-                "Se você pudesse ser um atleta profissional, qual esporte escolheria?",
-                "Qual é a sua maneira favorita de se manter ativo?",
-                "Se você pudesse ter um jantar com qualquer três pessoas, vivas ou mortas, quem convidaria?",
-                "Qual é a sua atividade ao ar livre favorita?",
-                "Se você pudesse ter um talento especial, qual seria?",
-                "Qual é o seu feriado favorito e por quê?",
-                "Se você pudesse ter qualquer emprego por um dia, qual escolheria?",
-                "Qual é a sua coisa favorita em si mesmo(a)?",
-                "O que você mais gosta de fazer nos fins de semana?",
-                "Qual é o seu prato favorito da culinária brasileira?",
-                "Se você pudesse viver em qualquer cidade do Brasil, qual escolheria?",
-                "Qual é o seu esporte favorito para assistir na televisão?",
-                "O que você mais gosta de fazer ao ar livre?",
-                "Qual é a sua série de TV favorita?",
-                "Se você pudesse ter um superpoder relacionado à comida, qual seria?",
-                "Qual é a sua sobremesa favorita?",
-                "O que você mais gosta de fazer nas férias?",
-                "Se você pudesse ter um animal de estimação incomum, qual escolheria?",
-                "Qual é o seu filme brasileiro favorito?",
-                "Se você pudesse ter uma casa em qualquer lugar do mundo, onde seria?",
-                "Qual é a sua atividade física favorita?",
-                "O que você mais gosta de fazer em dias chuvosos?",
-                "Se você pudesse aprender um novo idioma, qual escolheria?",
-                "Qual é o seu tipo de música favorito?",
-                "Se você pudesse ter um poder de cura, qual seria?",
-                "Qual é a sua comida favorita para um dia de frio?",
-                "Se você pudesse ser um personagem de desenho animado, quem seria?",
-                "Qual é o seu destino de viagem dos sonhos?",
-                "Se você pudesse ter uma profissão diferente, qual escolheria?",
-                "Qual é a sua habilidade culinária favorita?",
-                "O que você mais gosta de fazer em seu tempo livre?",
-                "Se você pudesse ter um talento artístico, qual seria?",
-                "Qual é o seu programa de TV favorito da infância?",
-                "Se você pudesse ter um poder mágico, qual seria?",
-                "Qual é a sua bebida favorita?",
-                "O que você mais gosta de fazer em um dia ensolarado?",
-            ];
+        <div class="config-row">
+            <label for="requesterToken">Token:</label>
+            <input type="password" id="requesterToken" placeholder="Enter your bearer token" />
+        </div>
+        <div class="config-row">
+            <label for="language">Language:</label>
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="pt">Portuguese</option>
+            </select>
+        </div>
+        <button class="button" id="loadQuestionsButton"><i class="fas fa-download"></i> Load Questions from LLM</button>
+        <div id="statusMessage" class="status-message" style="display: none;"></div>
+    </div>
 
-            var questions = [];
+    <div class="question-container">
+        <div class="question">
+            <p id="generatedQuestion">Welcome! Load questions from LLM or click the button below to generate an icebreaker question.</p>
+        </div>
+    </div>
+    <button class="button" id="playButton"><i class="fas fa-play"></i> </button>
+    <button class="button" id="pauseButton" disabled><i class="fas fa-pause"></i> </button>
+    <button class="button" id="removeQuestionButton" disabled><i class="fas fa-times"></i> </button>
+    <div>
+        <button class="button" id="addUserButton">Add User</button>
+        <button class="button" id="selectUserButton">Select User</button>
+    </div>
+    <p id="selectedUser"></p>
+    <h2>User List:</h2>
+    <ul id="userList"></ul>
+</div>
+<script>
+    var englishQuestions = [
+        "If you could have any superpower, what would it be and why?",
+        "What is your favorite hobby or pastime?",
+        "If you could travel anywhere in the world, where would you go and why?",
+        "What is the most memorable concert or live performance you have attended?",
+        "If you could meet any historical figure, who would it be and what would you ask them?",
+        "What is your favorite book or movie and why?",
+        "If you could have dinner with any fictional character, who would it be and why?",
+        "What is one thing on your bucket list that you hope to achieve?",
+        "If you could learn any new skill instantly, what would it be and why?",
+        "What is your favorite way to relax and unwind after a long day?"
+    ];
 
-            $(document).ready(function () {
-                function getQueryParams() {
-                    var params = {};
-                    window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) {
-                        params[key] = decodeURIComponent(value);
-                    });
-                    return params;
-                }
+    var portugueseQuestions = [
+        "Qual é o seu hobby favorito?",
+        "Se você pudesse ter um superpoder, qual seria?",
+        "Qual é a sua música favorita para cantar no karaokê?",
+        "Qual é o seu livro ou filme favorito?",
+        "Se você pudesse viajar para qualquer lugar do mundo, para onde iria?",
+        "Qual é a aventura mais emocionante que você já viveu?",
+        "Se você pudesse conhecer qualquer figura histórica, quem seria?",
+        "Qual é a sua maneira favorita de relaxar após um dia longo?",
+        "Qual é o seu sabor de sorvete favorito?",
+        "Se você pudesse jantar com qualquer personagem fictício, quem seria?"
+    ];
 
-                function addUsersFromQueryParam() {
-                    var queryParams = getQueryParams();
-                    var usersParam = queryParams["users"];
-                    if (usersParam) {
-                        var userList = $("#userList");
-                        var newUsers = usersParam.split(",");
-                        $.each(newUsers, function (index, username) {
-                            username = username.trim();
-                            if (username) {
-                                var listItem = $("<li>").text(username);
-                                userList.append(listItem);
-                            }
-                        });
-                    }
-                }
+    var questions = [];
+    var dynamicQuestions = [];
 
-                addUsersFromQueryParam();
+    function getPrompt(language) {
+        if (language === 'pt') {
+            return `Você é um especialista em dinâmicas de grupo e team building. Crie exatamente 20 perguntas quebra-gelo criativas e envolventes para retrospectivas de equipe.
 
-                function getLanguage() {
-                    var queryParams = getQueryParams();
-                    var language = queryParams["language"];
-                    questions = englishQuestions;
-                    if (language) {
-                        questions = language === "pt" ? portugueseQuestions : englishQuestions;
-                    }
-                }
-                getLanguage();
+REGRAS IMPORTANTES:
+- Evite perguntas óbvias como "qual sua cor favorita"
+- Foque em perguntas que estimulem reflexão e compartilhamento de experiências
+- Inclua perguntas sobre valores, experiências de vida, dilemas interessantes
+- Misture perguntas leves com algumas mais profundas
+- Garanta que sejam apropriadas para ambiente profissional
+- Retorne APENAS as perguntas, uma por linha, sem numeração ou formatação extra
 
-                $('#themeButton').click(function() {
-                    $('body').toggleClass('dark-theme');
-                    if ($('body').hasClass('dark-theme')) {
-                        $(this).html('<i class="fas fa-sun"></i> ');
-                    } else {
-                        $(this).html('<i class="fas fa-moon"></i> ');
-                    }
-                });
+Exemplos do estilo desejado:
+- Se você pudesse ter uma conversa com seu eu de 10 anos atrás, que conselho daria?
+- Qual foi o maior risco que você já assumiu e valeu a pena?
+- Se você pudesse resolver um problema mundial, qual escolheria?
 
-                $("#removeQuestionButton").click(function () {
-                    var currentQuestion = $("#generatedQuestion").text();
-                    var index = questions.indexOf(currentQuestion);
-                    if (index > -1) {
-                        questions.splice(index, 1);
-                    }
-                    $("#generatedQuestion").text("Question removed. Click the 'Play' button for a new one.");
-                });
+Crie 20 perguntas seguindo esse estilo:`;
+        } else {
+            return `You are an expert in group dynamics and team building. Create exactly 20 creative and engaging icebreaker questions for team retrospectives.
 
-                var intervalId;
+IMPORTANT RULES:
+- Avoid obvious questions like "what's your favorite color"
+- Focus on questions that stimulate reflection and experience sharing
+- Include questions about values, life experiences, interesting dilemmas
+- Mix light questions with some deeper ones
+- Ensure they're appropriate for professional environments
+- Return ONLY the questions, one per line, without numbering or extra formatting
 
-                $("#playButton").click(function () {
-                    $(this).prop("disabled", true);
-                    $("#pauseButton").prop("disabled", false);
-                    $("#removeQuestionButton").prop("disabled", true);
-                    intervalId = setInterval(function () {
-                        var randomNumber = Math.floor(Math.random() * questions.length);
-                        var generatedQuestion = questions[randomNumber];
-                        $("#generatedQuestion").text(generatedQuestion);
-                    }, 50);
-                });
+Examples of the desired style:
+- If you could have a conversation with yourself from 10 years ago, what advice would you give?
+- What's the biggest risk you've ever taken that paid off?
+- If you could solve one world problem, which would you choose?
 
-                $("#pauseButton").click(function () {
-                    $("#playButton").prop("disabled", false);
-                    $("#removeQuestionButton").prop("disabled", false);
-                    $(this).prop("disabled", true);
-                    clearInterval(intervalId);
-                });
+Create 20 questions following this style:`;
+        }
+    }
 
-                $("#addUserButton").click(function () {
-                    var usernames = prompt("Enter usernames separated by commas:");
-                    if (usernames) {
-                        var userList = $("#userList");
-                        var newUsers = usernames.split(",").map(function (username) {
-                            return username.trim();
-                        });
-
-                        newUsers = newUsers.filter(function (username) {
-                            return !userList.find("li:contains('" + username + "')").length;
-                        });
-
-                        newUsers.forEach(function (username) {
-                            var listItem = $("<li>").text(username);
-                            userList.append(listItem);
-                        });
-
-                        updateURLWithUsers();
-                    }
-                });
-
-                function updateURLWithUsers() {
-                    var userList = $("#userList li");
-                    var usernames = userList
-                        .map(function () {
-                            return $(this).text();
-                        })
-                        .get()
-                        .join(",");
-
-                    var url = window.location.href;
-                    var regex = /[?&]users=[^&]+/i;
-                    url = url.replace(regex, "");
-
-                    if (usernames) {
-                        var separator = url.indexOf("?") === -1 ? "?" : "&";
-                        var updatedURL = url + separator + "users=" + encodeURIComponent(usernames);
-                        window.history.replaceState({}, "", updatedURL);
-                    } else {
-                        window.history.replaceState({}, "", url);
-                    }
-                }
-
-                $("#selectUserButton").click(function () {
-                    var userList = $("#userList");
-                    var users = userList.find("li");
-                    if (users.length > 0) {
-                        var selectedUser = users.first().text();
-                        $("#selectedUser").text("Selected User: " + selectedUser);
-                        users.first().remove();
-
-                        // Remove the question
-                        var currentQuestion = $("#generatedQuestion").text();
-                        var index = questions.indexOf(currentQuestion);
-                        if (index > -1) {
-                            questions.splice(index, 1);
-                        }
-                        $("#generatedQuestion").text("Question removed. Click 'Generate Question' for a new one.");
-                    } else {
-                        $("#selectedUser").text("No users available.");
-                    }
-                });
+    $(document).ready(function () {
+        function getQueryParams() {
+            var params = {};
+            window.location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (str, key, value) {
+                params[key] = decodeURIComponent(value);
             });
-        </script>
-    </body>
+            return params;
+        }
+
+        function addUsersFromQueryParam() {
+            var queryParams = getQueryParams();
+            var usersParam = queryParams["users"];
+            if (usersParam) {
+                var userList = $("#userList");
+                var newUsers = usersParam.split(",");
+                $.each(newUsers, function (index, username) {
+                    username = username.trim();
+                    if (username) {
+                        var listItem = $("<li>").text(username);
+                        userList.append(listItem);
+                    }
+                });
+            }
+        }
+
+        function initializeQuestions() {
+            var queryParams = getQueryParams();
+            var language = queryParams["language"] || $("#languageSelect").val();
+            $("#languageSelect").val(language);
+            questions = language === "pt" ? portugueseQuestions : englishQuestions;
+        }
+
+        addUsersFromQueryParam();
+        initializeQuestions();
+
+        $("#languageSelect").change(function() {
+            var language = $(this).val();
+            questions = language === "pt" ? portugueseQuestions : englishQuestions;
+
+            // If we have dynamic questions, keep using them
+            if (dynamicQuestions.length > 0) {
+                questions = dynamicQuestions;
+            }
+        });
+
+        function showStatus(message, isError = false) {
+            var statusDiv = $("#statusMessage");
+            statusDiv.removeClass("status-success status-error");
+            statusDiv.addClass(isError ? "status-error" : "status-success");
+            statusDiv.text(message);
+            statusDiv.show();
+
+            setTimeout(function() {
+                statusDiv.fadeOut();
+            }, 5000);
+        }
+
+        $("#loadQuestionsButton").click(function() {
+            var apiUrl = $("#apiUrl").val().trim();
+            var token = $("#requesterToken").val().trim();
+            var language = $("#languageSelect").val();
+
+            if (!apiUrl) {
+                showStatus("Please enter an API URL", true);
+                return;
+            }
+
+            if (!token) {
+                showStatus("Please enter a bearer token", true);
+                return;
+            }
+
+            var button = $(this);
+            button.addClass("loading").prop("disabled", true);
+            button.html('<i class="fas fa-spinner fa-spin"></i> Loading...');
+
+            var prompt = getPrompt(language);
+
+            $.ajax({
+                url: apiUrl,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                data: JSON.stringify({
+                    model: "claude-sonnet-4-20250514-v1.0",
+                    messages: [{"role": "user", "content": prompt}]
+                }),
+                success: function(response) {
+                    try {
+                        var content = response.choices[0].message.content;
+                        var newQuestions = content.split('\n')
+                            .map(function(q) { return q.trim(); })
+                            .filter(function(q) { return q.length > 0 && !q.match(/^\d+\.?\s*/); });
+
+                        if (newQuestions.length > 0) {
+                            dynamicQuestions = newQuestions;
+                            questions = dynamicQuestions;
+                            showStatus("Successfully loaded " + newQuestions.length + " questions!");
+                            $("#generatedQuestion").text("Dynamic questions loaded! Click 'Play' to start.");
+                        } else {
+                            showStatus("No valid questions found", true);
+                        }
+                    } catch (error) {
+                        showStatus("Error parsing response: " + error.message, true);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    var errorMsg = "Failed to load questions: ";
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg += xhr.responseJSON.error.message || error;
+                    } else if (error.includes('CORS')) {
+                        errorMsg = "CORS error - install 'CORS Unblock' browser extension";
+                    } else {
+                        errorMsg += error;
+                    }
+                    showStatus(errorMsg, true);
+                },
+                complete: function() {
+                    button.removeClass("loading").prop("disabled", false);
+                    button.html('<i class="fas fa-download"></i> Load Questions from LLM');
+                }
+            });
+
+            $.ajax(ajaxConfig)
+                .done(function(response) {
+                    try {
+                        var content = response.choices[0].message.content;
+                        var newQuestions = content.split('\n')
+                            .map(function(q) { return q.trim(); })
+                            .filter(function(q) { return q.length > 0 && !q.match(/^\d+\.?\s*/); });
+
+                        if (newQuestions.length > 0) {
+                            dynamicQuestions = newQuestions;
+                            questions = dynamicQuestions;
+                            showStatus("Successfully loaded " + newQuestions.length + " questions from LLM!");
+                            $("#generatedQuestion").text("Dynamic questions loaded! Click 'Play' to start.");
+                        } else {
+                            showStatus("No valid questions found in response", true);
+                        }
+                    } catch (error) {
+                        showStatus("Error parsing response: " + error.message, true);
+                    }
+                })
+                .fail(function(xhr, status, error) {
+                    var errorMsg = "Failed to load questions: ";
+                    if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg += xhr.responseJSON.error.message || error;
+                    } else {
+                        errorMsg += error;
+                    }
+                    showStatus(errorMsg, true);
+                })
+                .always(function() {
+                    button.removeClass("loading").prop("disabled", false);
+                    button.html('<i class="fas fa-download"></i> Load Questions from LLM');
+                });
+        });
+
+        $('#themeButton').click(function() {
+            $('body').toggleClass('dark-theme');
+            if ($('body').hasClass('dark-theme')) {
+                $(this).html('<i class="fas fa-sun"></i> ');
+            } else {
+                $(this).html('<i class="fas fa-moon"></i> ');
+            }
+        });
+
+        $("#removeQuestionButton").click(function () {
+            var currentQuestion = $("#generatedQuestion").text();
+            var index = questions.indexOf(currentQuestion);
+            if (index > -1) {
+                questions.splice(index, 1);
+            }
+            $("#generatedQuestion").text("Question removed. Click the 'Play' button for a new one.");
+        });
+
+        var intervalId;
+
+        $("#playButton").click(function () {
+            if (questions.length === 0) {
+                showStatus("No questions available. Load questions from LLM or use default ones.", true);
+                return;
+            }
+
+            $(this).prop("disabled", true);
+            $("#pauseButton").prop("disabled", false);
+            $("#removeQuestionButton").prop("disabled", true);
+            intervalId = setInterval(function () {
+                var randomNumber = Math.floor(Math.random() * questions.length);
+                var generatedQuestion = questions[randomNumber];
+                $("#generatedQuestion").text(generatedQuestion);
+            }, 50);
+        });
+
+        $("#pauseButton").click(function () {
+            $("#playButton").prop("disabled", false);
+            $("#removeQuestionButton").prop("disabled", false);
+            $(this).prop("disabled", true);
+            clearInterval(intervalId);
+        });
+
+        $("#addUserButton").click(function () {
+            var usernames = prompt("Enter usernames separated by commas:");
+            if (usernames) {
+                var userList = $("#userList");
+                var newUsers = usernames.split(",").map(function (username) {
+                    return username.trim();
+                });
+
+                newUsers = newUsers.filter(function (username) {
+                    return !userList.find("li:contains('" + username + "')").length;
+                });
+
+                newUsers.forEach(function (username) {
+                    var listItem = $("<li>").text(username);
+                    userList.append(listItem);
+                });
+
+                updateURLWithUsers();
+            }
+        });
+
+        function updateURLWithUsers() {
+            var userList = $("#userList li");
+            var usernames = userList
+                .map(function () {
+                    return $(this).text();
+                })
+                .get()
+                .join(",");
+
+            var url = window.location.href;
+            var regex = /[?&]users=[^&]+/i;
+            url = url.replace(regex, "");
+
+            if (usernames) {
+                var separator = url.indexOf("?") === -1 ? "?" : "&";
+                var updatedURL = url + separator + "users=" + encodeURIComponent(usernames);
+                window.history.replaceState({}, "", updatedURL);
+            } else {
+                window.history.replaceState({}, "", url);
+            }
+        }
+
+        $("#selectUserButton").click(function () {
+            var userList = $("#userList");
+            var users = userList.find("li");
+            if (users.length > 0) {
+                var selectedUser = users.first().text();
+                $("#selectedUser").text("Selected User: " + selectedUser);
+                users.first().remove();
+
+                // Remove the question
+                var currentQuestion = $("#generatedQuestion").text();
+                var index = questions.indexOf(currentQuestion);
+                if (index > -1) {
+                    questions.splice(index, 1);
+                }
+                $("#generatedQuestion").text("Question removed. Click 'Generate Question' for a new one.");
+                updateURLWithUsers();
+            } else {
+                $("#selectedUser").text("No users available.");
+            }
+        });
+    });
+</script>
+</body>
 </html>
