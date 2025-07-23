@@ -388,6 +388,7 @@ Create 40 questions following this style:`;
             $.ajax({
                 url: apiUrl,
                 method: 'POST',
+                timeout: 30000,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
