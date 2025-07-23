@@ -164,6 +164,15 @@
                 <input type="password" id="requesterToken" placeholder="Enter your bearer token" />
             </div>
             <div class="config-row">
+                <label for="modelSelect">Model:</label>
+                <input list="models" id="modelSelect" placeholder="Select or type model name" value="claude-sonnet-4-20250514-v1.0" />
+                <datalist id="models">
+                    <option value="gemini-2.5-flash">
+                    <option value="chatgpt-4o-latest">
+                    <option value="claude-sonnet-4-20250514-v1.0">
+                </datalist>
+            </div>
+            <div class="config-row">
                 <label for="language">Language:</label>
                 <select id="languageSelect">
                     <option value="en">English</option>
@@ -384,7 +393,7 @@ Create 40 questions following this style:`;
                     'Authorization': 'Bearer ' + token
                 },
                 data: JSON.stringify({
-                    model: "claude-sonnet-4-20250514-v1.0",
+                    model: $("#modelSelect").val() || "claude-sonnet-4-20250514-v1.0",
                     messages: [{"role": "user", "content": prompt}]
                 }),
                 success: function(response) {
