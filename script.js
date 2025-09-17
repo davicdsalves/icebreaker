@@ -50,7 +50,7 @@ function getPrompt(language, theme = "") {
             : "Respond in English.";
 
     return `
-    Create exactly 40 creative and engaging icebreaker questions.
+    Create exactly 60 creative and engaging icebreaker questions.
         
         IMPORTANT RULES:
         - Avoid obvious questions like "what's your favorite color"
